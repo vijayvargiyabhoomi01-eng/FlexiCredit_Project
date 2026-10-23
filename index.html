@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FlexiCredit personal finance dashboard demo">
+  <title>FlexiCredit — Smart Money, Clear Mind</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">F</span><span>flexi<span class="brand-light">credit</span><small>PERSONAL FINANCE</small></span></a>
+    <div class="nav-label">WORKSPACE</div>
+    <nav>
+      <button class="nav-item active" data-view="dashboard"><span>▦</span> Overview</button>
+      <button class="nav-item" data-view="transactions"><span>↔</span> Transactions</button>
+      <button class="nav-item" data-view="insights"><span>◒</span> Insights</button>
+    </nav>
+    <div class="sidebar-card"><div class="mini-spark">↗</div><strong>Small steps.<br>Big progress.</strong><p>Every smart choice gets you closer to your goals.</p><button id="goalBtn" class="text-button">Set a savings goal <span>→</span></button></div>
+    <div class="sidebar-bottom"><div class="avatar">FC</div><div><strong>FlexiCredit Demo</strong><small>Personal account</small></div><span class="online-dot"></span></div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar"><button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button><div class="breadcrumb">Workspace <span>/</span> <b id="pageName">Overview</b></div><div class="top-actions"><span class="date-chip" id="todayLabel"></span><button class="icon-button" id="helpBtn" title="Help">?</button><div class="avatar small-avatar">FC</div></div></header>
+    <section class="page-heading"><div><div class="eyebrow"><span class="live-dot"></span> YOUR MONEY, IN FOCUS</div><h1 id="greeting">Good evening 👋</h1><p>Here’s your financial snapshot. You’re doing better than you think.</p></div><button class="primary-button" id="addTopBtn"><span>＋</span> Add transaction</button></section>
+    <section class="view active" id="dashboardView">
+      <div class="stats-grid">
+        <article class="stat-card balance-card"><div class="stat-top"><span>Total balance</span><span class="stat-icon">◈</span></div><div class="stat-value" id="balanceValue">₹0.00</div><div class="stat-foot"><span class="trend positive">↗ Live calculation</span><span class="muted">Income − expenses</span></div><div class="balance-orb"></div></article>
+        <article class="stat-card"><div class="stat-top"><span>Total income</span><span class="stat-icon income-icon">↙</span></div><div class="stat-value" id="incomeValue">₹0.00</div><div class="stat-foot"><span class="trend positive">＋ Money in</span><span class="muted">All time</span></div></article>
+        <article class="stat-card"><div class="stat-top"><span>Total expenses</span><span class="stat-icon expense-icon">↗</span></div><div class="stat-value" id="expenseValue">₹0.00</div><div class="stat-foot"><span class="trend neutral">− Money out</span><span class="muted">All time</span></div></article>
+        <article class="stat-card"><div class="stat-top"><span>Savings rate</span><span class="stat-icon savings-icon">✳</span></div><div class="stat-value" id="savingsValue">0%</div><div class="stat-foot"><span class="trend positive" id="savingsStatus">Keep building</span><span class="muted">Of total income</span></div></article>
+      </div>
+      <div class="content-grid">
+        <article class="panel cashflow-panel"><div class="panel-heading"><div><h2>Cash flow</h2><p>Understand your money movement</p></div><select id="chartRange" class="select-control" aria-label="Chart range"><option value="all">All time</option><option value="30">Last 30 days</option><option value="7">Last 7 days</option></select></div><div class="chart-legend"><span><i class="legend-income"></i> Income</span><span><i class="legend-expense"></i> Expenses</span></div><div class="chart-wrap"><canvas id="cashflowChart" aria-label="Income and expenses chart"></canvas><div id="chartEmpty" class="chart-empty hidden">Add transactions to see your cash flow.</div></div></article>
+        <article class="panel category-panel"><div class="panel-heading"><div><h2>Spending breakdown</h2><p>Where your money goes</p></div><span class="soft-badge">BY CATEGORY</span></div><div id="categoryBreakdown" class="category-breakdown"></div></article>
+      </div>
+      <div class="panel recent-panel"><div class="panel-heading"><div><h2>Recent transactions</h2><p>Your latest money activity</p></div><button class="link-button" data-goto="transactions">View all transactions →</button></div><div class="table-scroll"><table><thead><tr><th>TRANSACTION</th><th>CATEGORY</th><th>DATE</th><th>AMOUNT</th><th></th></tr></thead><tbody id="recentRows"></tbody></table></div><div id="recentEmpty" class="empty-state hidden"><div class="empty-icon">↔</div><strong>No transactions yet</strong><p>Add your first transaction to bring your dashboard to life.</p><button class="primary-button" id="emptyAddBtn">＋ Add transaction</button></div></div>
+    </section>
+
+    <section class="view" id="transactionsView">
+      <div class="panel transactions-panel"><div class="panel-heading"><div><h2>All transactions</h2><p>Track every rupee, one entry at a time.</p></div><button class="primary-button" id="addTransactionsBtn">＋ Add transaction</button></div>
+        <div class="filters"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search title, category or notes…"></label><select id="typeFilter" class="select-control"><option value="ALL">All types</option><option value="INCOME">Income</option><option value="EXPENSE">Expense</option></select><select id="categoryFilter" class="select-control"><option value="ALL">All categories</option></select><button class="secondary-button" id="exportBtn">↧ Export CSV</button></div>
+        <div class="table-scroll"><table><thead><tr><th>TRANSACTION</th><th>CATEGORY</th><th>DATE</th><th>NOTES</th><th>AMOUNT</th><th>ACTION</th></tr></thead><tbody id="allRows"></tbody></table></div><div id="allEmpty" class="empty-state hidden"><div class="empty-icon">⌕</div><strong>No matching transactions</strong><p>Try changing your filters or add a new entry.</p></div>
+      </div>
+    </section>
+
+    <section class="view" id="insightsView">
+      <div class="insight-grid"><article class="panel insight-hero"><span class="soft-badge">YOUR MONEY REPORT</span><h2>A clearer picture<br>of your finances.</h2><p>Use these quick insights to build habits that work for you. Figures update as you add transactions.</p><div class="insight-big" id="insightNet">₹0</div><small>Net cash flow</small></article><article class="panel"><div class="panel-heading"><div><h2>Smart insights</h2><p>Based on your current entries</p></div><span>✦</span></div><div id="insightList" class="insight-list"></div></article></div>
+      <article class="panel goal-panel"><div class="panel-heading"><div><h2>Your savings goal</h2><p>Give your next milestone a number.</p></div><button class="secondary-button" id="editGoalBtn">Edit goal</button></div><div class="goal-row"><div class="goal-icon">◎</div><div class="goal-copy"><strong id="goalName">Emergency fund</strong><small id="goalMeta">Set a target to start tracking</small></div><div class="goal-amount" id="goalAmount">₹0 / ₹0</div></div><div class="progress-track"><div id="goalProgress" class="progress-fill"></div></div><div class="goal-foot"><span id="goalPercent">0% completed</span><span id="goalRemaining">Set your goal amount</span></div></article>
+      <article class="panel email-panel"><div class="panel-heading"><div><h2>Monthly email report</h2><p>Send your personal finance summary directly to your inbox.</p></div><span class="email-icon">✉</span></div><form id="emailForm" class="email-form"><label class="field"><span>Email address</span><input id="emailAddress" type="email" required maxlength="254" placeholder="you@example.com"></label><label class="field"><span>Report note (optional)</span><input id="emailNote" maxlength="160" placeholder="A quick note to include in the draft"></label><button class="primary-button" type="submit">Send email report <span>→</span></button></form><p class="email-disclaimer">Email delivery uses the Node.js backend and your configured SMTP account.</p></article>
+    </section>
+    <footer class="footer"><span>FlexiCredit · Frontend learning project</span><span>Built for clarity <b>✦</b></span></footer>
+  </main>
+</div>
+
+<div class="modal-backdrop hidden" id="transactionModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal"><div class="modal-heading"><div><span class="eyebrow">MONEY MOVEMENT</span><h2 id="modalTitle">Add transaction</h2><p>Every little detail helps you stay in control.</p></div><button class="close-button" data-close="transactionModal" aria-label="Close">×</button></div>
+<form id="transactionForm"><input type="hidden" id="editId"><div class="type-switch"><button type="button" class="type-option selected" data-type="EXPENSE">↗ Expense</button><button type="button" class="type-option" data-type="INCOME">↙ Income</button></div><input type="hidden" id="transactionType" value="EXPENSE">
+<div class="form-grid"><label class="field full"><span>Transaction title *</span><input id="titleInput" required maxlength="100" placeholder="e.g. Monthly groceries"></label><label class="field"><span>Amount (₹) *</span><input id="amountInput" required type="number" min="0.01" max="999999999" step="0.01" placeholder="0.00"></label><label class="field"><span>Category *</span><select id="categoryInput" required><option value="">Choose category</option><option>Food & Dining</option><option>Transport</option><option>Shopping</option><option>Bills & Utilities</option><option>Education</option><option>Health</option><option>Salary</option><option>Freelance</option><option>Investment</option><option>Other</option></select></label><label class="field"><span>Date *</span><input id="dateInput" type="date" required></label><label class="field"><span>Notes (optional)</span><input id="notesInput" maxlength="255" placeholder="Add a short note"></label></div><p class="form-error hidden" id="formError"></p><div class="modal-actions"><button type="button" class="secondary-button" data-close="transactionModal">Cancel</button><button type="submit" class="primary-button" id="saveTransactionBtn">Save transaction <span>→</span></button></div></form></div></div>
+
+<div class="modal-backdrop hidden" id="goalModal" role="dialog" aria-modal="true" aria-labelledby="goalModalTitle"><div class="modal compact-modal"><div class="modal-heading"><div><span class="eyebrow">A LITTLE FUTURE PLANNING</span><h2 id="goalModalTitle">Set a savings goal</h2><p>Pick a target that feels achievable.</p></div><button class="close-button" data-close="goalModal" aria-label="Close">×</button></div><form id="goalForm"><label class="field"><span>Goal name</span><input id="goalNameInput" maxlength="60" required value="Emergency fund"></label><label class="field"><span>Target amount (₹)</span><input id="goalTargetInput" type="number" min="1" step="1" required placeholder="50000"></label><div class="modal-actions"><button type="button" class="secondary-button" data-close="goalModal">Cancel</button><button class="primary-button" type="submit">Save goal →</button></div></form></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body></html>
